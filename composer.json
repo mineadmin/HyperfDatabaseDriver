@@ -1,0 +1,47 @@
+{
+  "name": "mineadmin/hyperf-database-driver",
+  "description": "Hyperf Database Driver",
+  "homepage": "https://www.mineadmin.com",
+  "license": "MIT",
+  "type": "library",
+  "authors": [
+    {
+      "name": "zds",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=8.1",
+    "ext-swoole": ">=5.1",
+    "hyperf/db-connection": "^3.1"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.0",
+    "hyperf/testing": "3.1.*",
+    "mockery/mockery": "^1.0",
+    "pestphp/pest": "2.x-dev",
+    "phpstan/phpstan": "^1.0",
+    "swoole/ide-helper": "dev-master"
+  },
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "Hyperf\\Database\\OdbcSqlServer\\": "src/OdbcSqlServer/src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Hyperf\\Database\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  },
+  "scripts": {
+    "cs-fix": "php-cs-fixer fix $1",
+    "test": "pest",
+    "analyse": "phpstan analyse --memory-limit 1000M -l 5 -c phpstan.neon ./src"
+  }
+}

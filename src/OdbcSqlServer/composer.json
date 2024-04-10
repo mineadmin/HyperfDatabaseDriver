@@ -1,0 +1,19 @@
+{
+  "name": "mineadmin/odbc-sql-server",
+  "type": "library",
+  "description": "在 Hyperf 下通过 odbc 驱动连接 mssql",
+  "keywords": [
+    "Hyperf","database","orm","sql server","MineAdmin"
+  ],
+  "license": "MIT",
+  "require": {
+    "php": ">=8.1",
+    "ext-swoole": ">=5.1",
+    "hyperf/db-connection": "^3.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Hyperf\\Database\\OdbcSqlServer\\": "src"
+    }
+  }
+}
