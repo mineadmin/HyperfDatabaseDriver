@@ -19,9 +19,9 @@ class ConfigProvider
     public function __invoke(): array
     {
         return [
-            'listeners' =>  [
-                RegisterConnectionListener::class
-            ]
+            'listeners' => [
+                RegisterConnectionListener::class,
+            ],
         ];
     }
 }
