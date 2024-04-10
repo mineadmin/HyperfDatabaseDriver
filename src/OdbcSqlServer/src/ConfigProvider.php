@@ -12,11 +12,16 @@ declare(strict_types=1);
 
 namespace Hyperf\Database\OdbcSqlServer;
 
+use Hyperf\Database\OdbcSqlServer\Listener\RegisterConnectionListener;
+
 class ConfigProvider
 {
     public function __invoke(): array
     {
         return [
+            'listeners' =>  [
+                RegisterConnectionListener::class
+            ]
         ];
     }
 }
