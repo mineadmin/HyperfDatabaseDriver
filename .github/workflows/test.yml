@@ -40,25 +40,6 @@ jobs:
         sw-version: [ 'v5.1.2', 'master' ]
       max-parallel: 20
       fail-fast: false
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-        options: >
-          --default-authentication-plugin mysql_native_password
-        ports:
-          - 3306:3306
-      pgsql:
-        image: postgres:14
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_PASSWORD: postgres
-      redis:
-        image: redis:latest
-        ports:
-          - 6379:6379
     env:
       SW_VERSION: ${{ matrix.sw-version }}
       MYSQL_VERSION: '8.0'
@@ -76,7 +57,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           tools: phpize
-          extensions: redis, pdo, pdo_mysql, bcmath,pdo_odbc,pdo_oci
+          extensions: redis, pdo, pdo_mysql, bcmath,sqlsrv,pdo_sqlsrv,pdo_odbc,pdo_oci
           ini-values: opcache.enable_cli=0
       - name: Setup Swoole
         run: |
@@ -87,7 +68,7 @@ jobs:
           rm swoole.tar.gz
           cd swoole
           phpize
-          ./configure --enable-openssl --enable-swoole-curl --enable-cares --enable-swoole-pgsql --enable-brotli
+          ./configure --enable-openssl --enable-swoole-curl --with-swoole-odbc=unixODBC,/usr --enable-cares --enable-swoole-pgsql --enable-brotli
           make -j$(nproc)
           sudo make install
           sudo sh -c "echo extension=swoole > /etc/php/${{ matrix.php-version }}/cli/conf.d/swoole.ini"
@@ -110,18 +91,6 @@ jobs:
           php -i
           php -m
       - name: Run Test Cases
-        env:
-          DB_DRIVER: mysql
-          DB_HOST: 127.0.0.1
-          DB_DATABASE: mineadmin
-        run: ./.travis/run.test.sh
-#      - name: Run PgSql Test Cases
-#        env:
-#          DB_DRIVER: pgsql
-#          DB_HOST: 127.0.0.1
-#          DB_PORT: 5432
-#          DB_USERNAME: postgres
-#          DB_PASSWORD: postgres
-#          DB_CHARSET: utf8
-#          DB_DATABASE: mineadmin
-#        run: ./.travis/run.test.sh
+        run: |
+          composer install --dev -vvv
+          ./vendor/bin/pest --parallel
