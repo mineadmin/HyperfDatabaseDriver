@@ -74,23 +74,12 @@ jobs:
           sudo sh -c "echo extension=swoole > /etc/php/${{ matrix.php-version }}/cli/conf.d/swoole.ini"
           sudo sh -c "echo swoole.use_shortname='Off' >> /etc/php/${{ matrix.php-version }}/cli/conf.d/swoole.ini"
           php --ri swoole
-      - name: Setup Packages
-        run: ./.travis/requirement.install.sh
-      - name: Run PHPStan
-        run: ./.travis/run.check.sh
-      - name: Setup Services
-        run: ./.travis/setup.services.sh
-      - name: Setup Mysql
-        run: export TRAVIS_BUILD_DIR=$(pwd) && bash ./.travis/setup.mysql.sh
-      - name: Setup PostgreSQL
-        run: export TRAVIS_BUILD_DIR=$(pwd) && bash ./.travis/setup.pgsql.sh
-      - name: Run Scripts Before Test
-        run: cp .travis/.env.example .env
       - name: Print PHP Environments
         run: |
           php -i
           php -m
       - name: Run Test Cases
         run: |
-          composer install --dev -vvv
+          composer install -vvv
+          composer an
           ./vendor/bin/pest --parallel
