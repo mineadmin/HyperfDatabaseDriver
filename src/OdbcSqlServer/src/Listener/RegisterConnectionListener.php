@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Hyperf\Database\OdbcSqlServer\Listener;
 
 use Hyperf\Database\Connection;
+use Hyperf\Database\OdbcSqlServer\Connection as MssqlConnection;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Framework\Event\BootApplication;
 
@@ -33,7 +34,7 @@ class RegisterConnectionListener implements ListenerInterface
             string $prefix,
             array $config
         ) {
-            return new Connection($connection, $database, $prefix, $config);
+            return new MssqlConnection($connection, $database, $prefix, $config);
         });
     }
 }
