@@ -83,6 +83,32 @@ class Builder extends Base
         );
     }
 
+    public function getColumnListing($table): array
+    {
+        [$schema, $table] = $this->parseSchemaAndTable($table);
+
+        $databaseName = $this->connection->getDatabaseName();
+
+        $table = $this->connection->getTablePrefix() . $table;
+
+        $results = $this->connection->select(
+            $this->grammar->compileColumnListing($table),
+        );
+
+        return $this->connection->getPostProcessor()->processColumnListing($results);
+    }
+
+    /**
+     * Determine if the given table has a given column.
+     *
+     * @param string $table
+     * @param string $column
+     */
+    public function hasColumn($table, $column): bool
+    {
+        return in_array(strtolower($column), array_map('strtolower', $this->getColumnListing($table)), true);
+    }
+
     /**
      * Parse the database object reference and extract the schema and table.
      */
