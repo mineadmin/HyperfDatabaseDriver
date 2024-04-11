@@ -28,10 +28,12 @@ class RegisterConnectionListener implements ListenerInterface
     public function process(object $event): void
     {
         Connection::resolverFor('odbc-sql-server', static function (
-            \PDO $connection,
+            $connection,
             string $database,
             string $prefix,
             array $config
-        ) {});
+        ) {
+            return new Connection($connection, $database, $prefix, $config);
+        });
     }
 }
