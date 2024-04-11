@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Hyperf\Database\OdbcSqlServer;
 
+use Hyperf\Database\OdbcSqlServer\Connectors\SqlServerConnector;
 use Hyperf\Database\OdbcSqlServer\Listener\RegisterConnectionListener;
 
 class ConfigProvider
@@ -19,6 +20,9 @@ class ConfigProvider
     public function __invoke(): array
     {
         return [
+            'dependencies' => [
+                'db.connector.odbc-sql-server' => SqlServerConnector::class,
+            ],
             'listeners' => [
                 RegisterConnectionListener::class,
             ],
